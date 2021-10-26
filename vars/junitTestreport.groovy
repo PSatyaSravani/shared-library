@@ -1,6 +1,6 @@
 def call(String url) {
   
-  junit '$url'
+  junit "${url}"
   
 }
 
