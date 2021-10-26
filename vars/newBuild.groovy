@@ -18,7 +18,7 @@ def call(String mvnaction) {
                     }
                  else if("${mvnaction}" == "Skip Test")
                     {
-                    bat 'mvn install -DskipTests=true'
+                    bat "mvn install -DskipTests=true"
                     }
 
 }
