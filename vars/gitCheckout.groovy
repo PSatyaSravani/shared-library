@@ -1,8 +1,8 @@
-def call(Map abc) {
+def call(Map stageParams) {
 checkout
 ([$class: 'GitSCM', 
-branches: [[name: abc.branch]], 
+branches: [[name: stageParams.branch]], 
 extensions: [], 
-userRemoteConfigs: [[url: abc.url]]])
+userRemoteConfigs: [[url: stageParams.url]]])
 
 }
