@@ -1,0 +1,48 @@
+@Library('shared-library@master') _
+
+
+pipeline {
+    agent any
+    stages {
+        stage('Git Checkout') {
+          steps {
+          gitCheckout(
+              branch: "main",
+              url: "https://github.com/PSatyaSravani/Samplepro"
+          )
+          }
+        }
+        stage('Build') {
+            steps {
+            //newBuild("Clean")
+            newBuild("Install")
+            //newBuild("Skip Test")
+            }
+        }
+        stage('JUnit Test') {
+         steps {
+            junitTestreport("target/surefire-reports/*.xml")
+         }
+        }
+        stage('SonarQube Analysis') {
+            def scannerHome = tool 'tool name: 'SonarQube', type: 'hudson.plugins.sonar.SonarRunnerInstallation''
+              withSonarQubeEnv('SonarQube') {
+               bat """ ${SonarQube}/bin/sonar-runner 
+              -D sonar.projectVersion=1.0-SNAPSHOT \
+              -D sonar.login=admin \
+              -D sonar.password=admin \
+              -D sonar.projectBaseDir=C:/Windows/System32/config/systemprofile/AppData/Local/Jenkins/.jenkins/workspace/Groovy1 \
+              -D sonar.projectKey=sonarproject \
+              -D sonar.sourceEncoding=UTF-8 \
+              -D sonar.language=java \
+              -D sonar.sources=Samplepro/src/main/java/com/mycompany/app/ \
+              -D sonar.tests=Samplepro/src/test/java/com/mycompany/app/ \
+              -D sonar.host.url=http://localhost:9000"""
+              }
+			
+        }
+       
+
+
+    }
+}
